@@ -48,3 +48,73 @@ bool Collision::checkBoundingCircle(GameObject* s1, GameObject* s2)
 	return false;
 }
 
+#define SIDES 4
+
+
+bool Collision::TouchTopof(GameObject* s1, GameObject* s2)
+{
+	float s1Bottom = s1->getCollisionBox().top + s1->getCollisionBox().height;
+	float s1Right = s1->getCollisionBox().left + s1->getCollisionBox().width;
+
+	float s2Bottom = s2->getCollisionBox().top + s2->getCollisionBox().height;
+	float s2Right = s2->getCollisionBox().left + s2->getCollisionBox().width;
+
+	return
+		(
+			s1Bottom > s2->getCollisionBox().top && // checks the the bottom of the first object against the top of the second object
+			s1Bottom < s2->getCollisionBox().top + (s2->getCollisionBox().height / 2) && // checks the bottom of the first object to the halfway point of the second object
+			s1Right> s2->getCollisionBox().left + (s2->getCollisionBox().width / SIDES) && // checks the right hand side of the first object against the left hand side with a slight deadzone
+			s1->getCollisionBox().left < s2Right - (s2->getCollisionBox().width / SIDES) // checks the left hand side of the first object against the right hand side of the second with a slight deadzone
+			); //returns true if all of those conditions are met
+}
+
+bool Collision::TouchBottomof(GameObject* s1, GameObject* s2)
+{
+	float s1Bottom = s1->getCollisionBox().top + s1->getCollisionBox().height;
+	float s1Right = s1->getCollisionBox().left + s1->getCollisionBox().width;
+
+	float s2Bottom = s2->getCollisionBox().top + s2->getCollisionBox().height;
+	float s2Right = s2->getCollisionBox().left + s2->getCollisionBox().width;
+
+	return
+		(
+			s1->getCollisionBox().top < (s2Bottom) && // checks the the top of the first object against the bottom of the second object 
+			s1->getCollisionBox().top >(s2Bottom) - (s2->getCollisionBox().height / 2) && // checks the top of the first object to the halfway point of the second object
+			s1Right > s2->getCollisionBox().left + (s2->getCollisionBox().width / SIDES) &&// checks the right hand side of the first object against the left hand side with a slight deadzone
+			s1->getCollisionBox().left < (s2Right)-(s2->getCollisionBox().width / SIDES)// checks the left hand side of the first object against the right hand side of the second with a slight deadzone
+			); //returns true if all of those conditions are met
+}
+
+bool Collision::TouchLeftof(GameObject* s1, GameObject* s2)
+{
+	float s1Bottom = s1->getCollisionBox().top + s1->getCollisionBox().height;
+	float s1Right = s1->getCollisionBox().left + s1->getCollisionBox().width;
+
+	float s2Bottom = s2->getCollisionBox().top + s2->getCollisionBox().height;
+	float s2Right = s2->getCollisionBox().left + s2->getCollisionBox().width;
+	return
+		(
+			s1Right <= s2Right && // checks that the right hand side of the first object is less than the second object right hand side
+			s1Right >= s2->getCollisionBox().left - SIDES && // checks that the right hand side of the is greater than the left hand side minus the sides
+			s1->getCollisionBox().top <= s2Bottom - (s2->getCollisionBox().width / SIDES) && // checks the top of the first object against the bottom of the second minus the width divided by the deadzone
+			s1Bottom >= (s2->getCollisionBox().top) + (s2->getCollisionBox().width / SIDES) // checks the bottom of the first object against the top of the second object minus the width divided by the deadzone
+			); //returns true if all of those conditions are met
+}
+
+bool Collision::TouchRightof(GameObject* s1, GameObject* s2)
+{
+	float s1Bottom = s1->getCollisionBox().top + s1->getCollisionBox().height;
+	float s1Right = s1->getCollisionBox().left + s1->getCollisionBox().width;
+
+	float s2Bottom = s2->getCollisionBox().top + s2->getCollisionBox().height;
+	float s2Right = s2->getCollisionBox().left + s2->getCollisionBox().width;
+
+	return(
+		s1->getCollisionBox().left >= s2->getCollisionBox().left &&  // checks that the left hand side of the first object is greater than the second object left hand side
+		s1->getCollisionBox().left <= s2Right + SIDES && // checks that the left hand side of the is less than the right hand side plus the sides
+		s1->getCollisionBox().top <= s2Bottom - (s2->getCollisionBox().width / SIDES) && // checks the top of the first object against the bottom of the second minus the width divided by the deadzone
+		s1Bottom >= s2->getCollisionBox().top + (s2->getCollisionBox().width / SIDES) // checks the bottom of the first object against the top of the second object minus the width divided by the deadzone
+		);
+}
+
+

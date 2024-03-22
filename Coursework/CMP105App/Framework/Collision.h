@@ -16,4 +16,8 @@ public:
 	// Check bounding circle collision. Returns true if collision occurs.
 	static bool checkBoundingCircle(GameObject* sp1, GameObject* sp2);
 
+	static bool TouchTopof(GameObject*, GameObject*);
+	static bool TouchBottomof(GameObject*, GameObject*);
+	static bool TouchLeftof(GameObject*, GameObject*);
+	static bool TouchRightof(GameObject*, GameObject*);
 };
